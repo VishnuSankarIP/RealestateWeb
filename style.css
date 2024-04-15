@@ -1,0 +1,21 @@
+.exploreBtn{
+    width: 150px;
+    height: 40px;
+     background-color: black;
+     color: white;
+     border: solid white 1px;
+     font-family: "Manrope"
+}
+body{
+    overflow-x: hidden;
+}
+
+@media(orientation:portrait){
+
+    .img1{
+        display: none;
+    }
+    .logoSection{
+        text-align: center;
+    }
+}

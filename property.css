@@ -1,0 +1,25 @@
+.search-container {
+    text-align: center;
+  }
+  
+  .search-bar {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-right: 5px; /* Adjust as needed */
+  }
+  
+  .search-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #2b2b2b; /* Change to desired button color */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .search-button:hover {
+    background-color: black; /* Change to desired hover color */
+  }
+  
