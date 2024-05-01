@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import logo from '../src/assets/logo1.jpg'
+import logo from '../src/assets/loginpic.png'
 import { Link, useNavigate } from 'react-router-dom'
-import { GoogleLogin } from '@react-oauth/google';
-import {jwtDecode}   from "jwt-decode";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { loginAPI, registerAPI } from '../Services/allAPI';
 
 
 
@@ -17,48 +16,114 @@ function Auth({insideRegister}) {
   console.log(userInputs);
 
 
+
   const togglePasswordVisibility = () => {
       setShowPassword(!showPassword);
   };
 
-  const handleLogin = (e) => {
-      e.preventDefault()
-
-      const emailRegex = /\b[A-Za-z0-9._%+-]+@gmail\.com\b/;
-      const minLength = 8;
-
-      if (userInputs.email && userInputs.password) {
-          if (!emailRegex.test(userInputs.email)) {
-              toast.warning("Please enter a valid Gmail address.");
-              return;
+  const handleRegister=async(e)=>{
+    e.preventDefault()
+    if( userInputs.email && userInputs.password)
+    {
+        // api call
+        try{
+          const result=await registerAPI(userInputs)
+          console.log(result);
+          if(result.status==200){
+            toast.success(`welcome....Please login to explore`)
+            // navigate('/login')
+            setTimeout(() => {
+                navigate('/login')
+              }, 2000)
+            setUserInputs({email:"",password:""})
+            
           }
-
-          if (userInputs.password.length < minLength) {
-              toast.warning("Password must be at least 8 characters long.");
-              return;
-
+          else{
+            alert(result.response.data)
           }
-          // sessionStorage.setItem('userEmail', userInputs.email);
-          setTimeout(() => {
-              navigate('/dash')
-          }, 2000)
-          setUserInputs({ email: '', password: '' });
+  
+  
+        }
+        catch(err)
+        {
+          console.log(err);
+  
+        }
+  
+    }
+    else{
+      toast.warning("please fill the form")
+    }
+  
+   }
 
-      }
-      else {
-          toast.warning("Please fill form")
-      }
-  }
+   const handleLogin=async(e)=>{
+    e.preventDefault()
+    if(userInputs.email && userInputs.password){
+        // api call
+        try{
+
+            const result=await loginAPI(userInputs)
+            if(result.status==200){
+
+                if(userInputs.email=="admin@gmail.com" && userInputs.password=="admin")
+                {
+                    sessionStorage.setItem("token", result.data.token);
+                    toast.success("welcome admin")
+                    setTimeout(() => {
+                        navigate('/admin')
+                      }, 2000)
+                   
+                }
+                else
+                {
+                    // store existing user and token
+                sessionStorage.setItem("existingUser",JSON.stringify(result.data.existingUser))
+                sessionStorage.setItem("token",result.data.token)
+                toast.success(`welcome ...User`)
+                setUserInputs({email:"",password:""})
+                setTimeout(() => {
+                    navigate('/dash')
+                  }, 2000)
+               
+
+                }
+                
+
+        
+
+                
+              }
+              else{
+                    toast.warning(result.response.data)
+              }
+
+
+
+        }catch(err)
+        {
+            console.log(err);
+        }
+    }
+    else{
+        toast.warning("please fill the form")
+    }
+
+   }
+
+
+
+
 
   return (
    <>
    <div className="mainDiv" style={{ height: '100vh' }}>
 
 <div className="row">
-    <div className="col-lg-7">
-        <img src={logo} width={'100%'} height={'750px'}></img>
+    <div className="col-lg-8">
+        <img src={logo} width={'100%'} height={'800px'}></img>
     </div>
-    <div className="col-lg-5">
+    <div className="col-lg-4">
         <div className="d-flex flex-column align-items-center">
             <h4 className='mt-5'>Serenity Estates</h4>
 
@@ -72,7 +137,7 @@ function Auth({insideRegister}) {
         <Form.Control style={{ borderColor: '#2b2b2b' }} type="email" placeholder="Enter your email" value={userInputs.email} onChange={e => setUserInputs({ ...userInputs, email: e.target.value })} />
     </Form.Group>
     <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-        <Form.Label style={{ fontFamily: 'PT Sans' }}>Password</Form.Label>
+        <Form.Label style={{ fontFamily: 'PT Sans' }} value={userInputs.email} onChange={e => setUserInputs({ ...userInputs, email: e.target.value })}>Password</Form.Label>
         <InputGroup>
             <Form.Control
                 type={showPassword ? "text" : "password"}
@@ -123,11 +188,11 @@ function Auth({insideRegister}) {
 {
     insideRegister?
     <div className="btnDiv w-100 justify-content-center d-flex mt-5">
-    <button  className='w-75 rounded' style={{ backgroundColor: '#2b2b2b', color: 'white', height: '40px' }}>Sign up</button>
+    <button onClick={handleRegister} className='w-75 rounded' style={{ backgroundColor: '#2b2b2b', color: 'white', height: '40px' }}>Sign up</button>
 
 </div> :
     <div className="btnDiv w-100 justify-content-center d-flex mt-5">
-    <button onClick={handleLogin} className='w-75 rounded' style={{ backgroundColor: '#2b2b2b', color: 'white', height: '40px' }}>Sign in</button>
+    <button onClick={handleLogin}  className='w-75 rounded' style={{ backgroundColor: '#2b2b2b', color: 'white', height: '40px' }}>Sign in</button>
 
 </div>
 }

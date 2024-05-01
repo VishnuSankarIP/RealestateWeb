@@ -1,14 +1,70 @@
 .exploreBtn{
     width: 150px;
     height: 40px;
-     background-color: black;
-     color: white;
+     background-color: white;
+     color: #7166F0;
      border: solid white 1px;
      font-family: "Manrope"
+
+   
+}
+.exploreBtn:hover{
+    scale: 1.1;
+    box-shadow: 16px 16px var(--shadow);
+    transition: all 0.2s;
 }
 body{
     overflow-x: hidden;
 }
+.y{
+    font-family: "Manrope"
+}
+.home{
+    display: grid;
+  height: 600px;
+  width: 600px;
+  background-image: var(--circle-rainbow);
+  border: 3px solid var(--dark-color);
+  border-radius: 50%;
+  transition: all 0.4s;
+  box-shadow: 0px 0px var(--shadow);
+}
+.home:hover{
+    scale: 1.1;
+  box-shadow: 16px 16px var(--shadow);
+  transition: all 0.2s;
+}
+.arrow{
+    display: grid;
+    height: 400px;
+    width: 400px;
+    background-image: var(--circle-rainbow);
+    border: 3px solid var(--dark-color);
+    border-radius: 50%;
+    transition: all 0.4s;
+    box-shadow: 0px 0px var(--shadow);
+}
+.arrow:hover{
+    scale: 1.1;
+    box-shadow: 16px 16px var(--shadow);
+    transition: all 0.2s;
+}
+.arrow1{
+    display: grid;
+    height: 400px;
+    width: 400px;
+    background-image: var(--circle-rainbow);
+    border: 3px solid var(--dark-color);
+    border-radius: 50%;
+    transition: all 0.4s;
+    box-shadow: 0px 0px var(--shadow);
+}
+.arrow1:hover{
+    scale: 1.1;
+    box-shadow: 16px 16px var(--shadow);
+    transition: all 0.2s;
+}
+
 
 @media(orientation:portrait){
 
